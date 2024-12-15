@@ -1,7 +1,7 @@
 
 # DataEngineering-Project
 
-Ce projet consiste à créer un pipeline ETL pour analyser les données des stations de vélos en libre-service dans plusieurs villes françaises. Le pipeline est conçu pour ingérer, transformer, et agréger des données provenant de différentes sources (API Open Data), puis les stocker dans une base de données locale DuckDB pour des analyses ultérieures. Pour ce projet nous avons choisi de rajouter les données la ville de Nantes:
+Ce projet consiste à créer un pipeline ETL pour analyser les données des stations de vélos en libre-service dans plusieurs villes françaises. Le pipeline est conçu pour ingérer, transformer, et agréger des données provenant de différentes sources (API Open Data), puis les stocker dans une base de données locale DuckDB pour des analyses ultérieures. Pour ce projet nous avons choisi de rajouter les données la ville de Nantes.
 
 ## **Installation**
 
@@ -17,8 +17,8 @@ Clonez ce projet sur votre machine locale :
 git clone https://github.com/ChancellaLITOKO/DataEngineering-Project.git
 cd DataEngineering-Project
 python -m venv .venv #Créez un environnement virtuel pour isoler les dépendances
-.venv\Scripts\activate (Windows) ou
-source .venv/bin/activate (Linux, Mac)
+.venv\Scripts\activate #(Windows) ou
+source .venv/bin/activate #(Linux, Mac)
 pip install -r requirements.txt
 ```
 Pour executer le pipeline ETL complet il faudrait lancer le fichier principal main.py
