@@ -39,6 +39,43 @@ Le pipeline suit une approche ETL structurée en trois grandes étapes : Ingesti
 
 Les données consolidées sont transformées en un modèle dimensionnel pour faciliter l'analyse. Les informations sont réparties dans trois types de tables : DIM_CITY (caractéristiques des villes), DIM_STATION (informations sur les stations), et FACT_STATION_STATEMENT (données de disponibilité des vélos). Les données sont agrégées pour inclure des mesures comme la capacité totale des stations ou le nombre de vélos disponibles, et seules les dernières mises à jour sont conservées.
 
+### **4. Requêtes analytiques **
+Après agrégation,voici les Requêtes realisees :
+*Nombre total d'emplacements disponibles par ville :*
+```sql
+SELECT dm.NAME, tmp.SUM_BICYCLE_DOCKS_AVAILABLE
+FROM DIM_CITY dm INNER JOIN (
+    SELECT CITY_ID, SUM(BICYCLE_DOCKS_AVAILABLE) AS SUM_BICYCLE_DOCKS_AVAILABLE
+    FROM FACT_STATION_STATEMENT
+    WHERE CREATED_DATE = (SELECT MAX(CREATED_DATE) FROM CONSOLIDATE_STATION)
+    GROUP BY CITY_ID
+) tmp ON dm.ID = tmp.CITY_ID
+WHERE lower(dm.NAME) in ('paris', 'nantes', 'vincennes');
+```
+*Resultat:*
+       NAME  SUM_BICYCLE_DOCKS_AVAILABLE
+0      Paris                      18888.0
+1  Vincennes                        154.0
+2     Nantes                       1465.0
+
+*Nombre de vélos disponibles en moyenne dans chaque station*
+```sql
+SELECT ds.name, ds.code, ds.address, tmp.avg_dock_available
+FROM DIM_STATION ds JOIN (
+    SELECT station_id, AVG(BICYCLE_AVAILABLE) AS avg_dock_available
+    FROM FACT_STATION_STATEMENT
+    GROUP BY station_id
+) AS tmp ON ds.id = tmp.station_id;
+```
+*Une partie du Résultat:*
+     NAME   CODE ADDRESS  avg_dock_available
+0          Benjamin Godard - Victor Hugo  16107    None                 4.5
+1            Cassini - Denfert-Rochereau  14111    None                 6.5
+2             Rouget de L'isle - Watteau  44015    None                10.0
+3               Jourdan - Stade Charléty  14014    None                18.5
+4                     Le Brun - Gobelins  13007    None                 4.5
+
+
 
 
 
